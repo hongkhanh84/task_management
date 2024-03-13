@@ -339,7 +339,7 @@
                         </Popper>
                     </div> -->
 
-                    <div class="dropdown shrink-0">
+                    <!-- <div class="dropdown shrink-0">
                         <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-end' : 'bottom-start'" offsetDistance="8">
                             <button
                                 type="button"
@@ -448,7 +448,7 @@
                                 </ul>
                             </template>
                         </Popper>
-                    </div>
+                    </div> -->
 
                     <div class="dropdown shrink-0">
                         <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-end' : 'bottom-start'" offsetDistance="8" class="!block">
@@ -477,7 +477,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <router-link to="/users/profile" class="dark:hover:text-white" @click="close()">
+                                        <router-link to="/user/profile" class="dark:hover:text-white" @click="close()">
                                             <svg
                                                 class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0"
                                                 width="18"
@@ -499,7 +499,7 @@
                                         </router-link>
                                     </li>
                                     <li class="border-t border-white-light dark:border-white-light/10">
-                                        <router-link to="/auth/boxed-signin" class="text-danger !py-3" @click="close()">
+                                        <router-link to="/login" class="text-danger !py-3" @click="close()">
                                             <svg
                                                 class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 rotate-90 shrink-0"
                                                 width="18"
@@ -561,20 +561,6 @@
                             </svg>
                         </div>
                     </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <router-link to="/">{{ $t('sales') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/analytics">{{ $t('analytics') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/finance">{{ $t('finance') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/crypto">{{ $t('crypto') }}</router-link>
-                        </li>
-                    </ul>
                 </li>
                 <li class="menu nav-item relative">
                     <a href="javascript:;" class="nav-link">
@@ -626,51 +612,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <router-link to="/apps/chat">{{ $t('chat') }}</router-link>
+                            <router-link to="/project">{{ $t('project') }}</router-link>
                         </li>
                         <li>
-                            <router-link to="/apps/mailbox">{{ $t('mailbox') }}</router-link>
+                            <router-link to="/task">{{ $t('task') }}</router-link>
                         </li>
                         <li>
-                            <router-link to="/apps/todolist">{{ $t('todo_list') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/apps/notes">{{ $t('notes') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/apps/scrumboard">{{ $t('scrumboard') }}</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/apps/contacts">{{ $t('contacts') }}</router-link>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('invoice') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-180">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <router-link to="/apps/invoice/list">{{ $t('list') }}</router-link>
-                                </li>
-                                <li>
-                                    <router-link to="/apps/invoice/preview">{{ $t('preview') }}</router-link>
-                                </li>
-                                <li>
-                                    <router-link to="/apps/invoice/add">{{ $t('add') }}</router-link>
-                                </li>
-                                <li>
-                                    <router-link to="/apps/invoice/edit">{{ $t('edit') }}</router-link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <router-link to="/apps/calendar">{{ $t('calendar') }}</router-link>
+                            <router-link to="/user">{{ $t('user') }}</router-link>
                         </li>
                     </ul>
                 </li>

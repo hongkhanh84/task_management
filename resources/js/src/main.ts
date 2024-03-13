@@ -31,6 +31,11 @@ appSetting.init();
 import i18n from '@/i18n';
 app.use(i18n);
 
+// //markdown editor
+// import VueEasymde from 'vue3-easymde';
+// import 'easymde/dist/easymde.min.css';
+// app.use(VueEasymde);
+
 // popper
 import Popper from 'vue3-popper';
 app.component('Popper', Popper);

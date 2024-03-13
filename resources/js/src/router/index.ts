@@ -7,6 +7,31 @@ import HomeView from '../views/index.vue';
 const routes: RouteRecordRaw[] = [
     // dashboard
     { path: '/', name: 'home', component: HomeView },
+    {
+        path: '/project',
+        name: 'project',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project.vue'),
+    },
+    {
+        path: '/task',
+        name: 'task',
+        component: () => import(/* webpackChunkName: "task" */ '../views/task.vue'),
+    },
+    {
+        path: '/project/:id',
+        name: 'tree_project',
+        component: () => import(/* webpackChunkName: "tree_project" */ '../views/tree_project.vue'),
+    },
+    {
+        path: '/user',
+        name: 'user',
+        component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
+    },
+    {
+        path: '/user/profile',
+        name: 'profile',
+        component: () => import(/* webpackChunkName: "profile" */ '../views/profile.vue'),
+    },
 ];
 
 const router = createRouter({
