@@ -28,9 +28,7 @@
                     }" class="h-[calc(100vh-80px)] relative">
                     <ul class="relative font-semibold space-y-0.5 p-4 py-0">
                         <li class="menu nav-item">
-                            <button type="button" class="nav-link group w-full"
-                                :class="{ active: activeDropdown === 'dashboard' }"
-                                @click="activeDropdown === 'dashboard' ? (activeDropdown = null) : (activeDropdown = 'dashboard')">
+                            <router-link to="/" class="group" @click="toggleMobileMenu">
                                 <div class="flex items-center">
                                     <svg class="group-hover:!text-primary shrink-0" width="20" height="20"
                                         viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +45,7 @@
                                         {{ $t('dashboard') }}
                                     </span>
                                 </div>
-                            </button>
+                            </router-link>
                         </li>
 
                         <h2
@@ -62,7 +60,7 @@
                         <li class="nav-item">
                             <ul>
                                 <li class="nav-item">
-                                    <router-link to="/apps/chat" class="group" @click="toggleMobileMenu">
+                                    <router-link to="/project" class="group" @click="toggleMobileMenu">
                                         <div class="flex items-center">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +71,6 @@
                                                     d="M11 4L10.4497 3.44975C10.1763 3.17633 10.0396 3.03961 9.89594 2.92051C9.27652 2.40704 8.51665 2.09229 7.71557 2.01738C7.52976 2 7.33642 2 6.94975 2C6.06722 2 5.62595 2 5.25839 2.06935C3.64031 2.37464 2.37464 3.64031 2.06935 5.25839C2 5.62595 2 6.06722 2 6.94975V9.25V10H22L21.9531 9.25C21.8809 8.20117 21.6973 7.51276 21.2305 6.99383C21.1598 6.91514 21.0849 6.84024 21.0062 6.76946C20.1506 6 18.8345 6 16.2021 6H15.8284C14.6747 6 14.0979 6 13.5604 5.84678C13.2651 5.7626 12.9804 5.64471 12.7121 5.49543C12.2237 5.22367 11.8158 4.81578 11 4Z"
                                                     fill="currentColor"></path>
                                             </svg>
-
                                             <span
                                                 class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
                                                 $t('Project')
@@ -82,27 +79,23 @@
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link to="/apps/mailbox" class="group" @click="toggleMobileMenu">
+                                    <router-link to="/task" class="group" @click="toggleMobileMenu">
                                         <div class="flex items-center">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.5"
-                                                    d="M16.755 2H7.24502C6.08614 2 5.50671 2 5.03939 2.16261C4.15322 2.47096 3.45748 3.18719 3.15795 4.09946C3 4.58055 3 5.17705 3 6.37006V20.3742C3 21.2324 3.985 21.6878 4.6081 21.1176C4.97417 20.7826 5.52583 20.7826 5.8919 21.1176L6.375 21.5597C7.01659 22.1468 7.98341 22.1468 8.625 21.5597C9.26659 20.9726 10.2334 20.9726 10.875 21.5597C11.5166 22.1468 12.4834 22.1468 13.125 21.5597C13.7666 20.9726 14.7334 20.9726 15.375 21.5597C16.0166 22.1468 16.9834 22.1468 17.625 21.5597L18.1081 21.1176C18.4742 20.7826 19.0258 20.7826 19.3919 21.1176C20.015 21.6878 21 21.2324 21 20.3742V6.37006C21 5.17705 21 4.58055 20.842 4.09946C20.5425 3.18719 19.8468 2.47096 18.9606 2.16261C18.4933 2 17.9139 2 16.755 2Z"
-                                                    stroke="currentColor" stroke-width="1.5"></path>
-                                                <path d="M10.5 11L17 11" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
-                                                <path d="M7 11H7.5" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
-                                                <path d="M7 7.5H7.5" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
-                                                <path d="M7 14.5H7.5" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
-                                                <path d="M10.5 7.5H17" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
-                                                <path d="M10.5 14.5H17" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round"></path>
+                                                <path d="M2 5.5L3.21429 7L7.5 3" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M2 12.5L3.21429 14L7.5 10" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M2 19.5L3.21429 21L7.5 17" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M22 19L12 19" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path d="M22 12L12 12" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path d="M22 5L12 5" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
                                             </svg>
-
                                             <span
                                                 class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
                                                 $t('Task')
@@ -111,18 +104,13 @@
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link to="/apps/todolist" class="group" @click="toggleMobileMenu">
+                                    <router-link to="/user" class="group" @click="toggleMobileMenu">
                                         <div class="flex items-center">
-                                            <svg class="group-hover:!text-primary shrink-0" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.5"
-                                                    d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z"
-                                                    fill="currentColor" />
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V7.25H14C14.4142 7.25 14.75 7.58579 14.75 8C14.75 8.41421 14.4142 8.75 14 8.75L12.75 8.75L12.75 10C12.75 10.4142 12.4142 10.75 12 10.75C11.5858 10.75 11.25 10.4142 11.25 10L11.25 8.75H9.99997C9.58575 8.75 9.24997 8.41421 9.24997 8C9.24997 7.58579 9.58575 7.25 9.99997 7.25H11.25L11.25 6C11.25 5.58579 11.5858 5.25 12 5.25ZM7.25 14C7.25 13.5858 7.58579 13.25 8 13.25H16C16.4142 13.25 16.75 13.5858 16.75 14C16.75 14.4142 16.4142 14.75 16 14.75H8C7.58579 14.75 7.25 14.4142 7.25 14ZM8.25 18C8.25 17.5858 8.58579 17.25 9 17.25H15C15.4142 17.25 15.75 17.5858 15.75 18C15.75 18.4142 15.4142 18.75 15 18.75H9C8.58579 18.75 8.25 18.4142 8.25 18Z"
-                                                    fill="currentColor" />
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="6" r="4" fill="#1C274C" />
+                                                <ellipse opacity="0.5" cx="12" cy="17" rx="7" ry="4" fill="#1C274C" />
                                             </svg>
-
                                             <span
                                                 class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{{
                                                 $t('User')
