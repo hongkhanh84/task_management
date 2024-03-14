@@ -445,50 +445,30 @@
                                         <form @submit.prevent="saveTask">
                                             <div class="mb-5">
                                                 <label for="title">Title</label>
-                                                <input id="title" type="text" placeholder="Enter Task Title"
+                                                <input id="title" type="text" placeholder="Enter Project Title"
                                                     class="form-input" v-model="title" />
                                             </div>
                                             <div class="mb-5 flex justify-between gap-4">
                                                 <div class="flex-1">
                                                     <label for="tag">Start Day</label>
                                                     <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
-                                                        href="javascript:;" @click="toggleCode('code1')"></a>
+                                                        href="javascript:;" @click="toggleCode('code1')">
+                                                    </a>
+                                                    <div class="mb-5">
+                                                        <flat-pickr v-model="date1" class="form-input"
+                                                            :config="basic"></flat-pickr>
+                                                    </div>
                                                 </div>
                                                 <div class="flex-1">
                                                     <label for="priority">End Day</label>
-                                                    <select id="priority" class="form-select" v-model="params.priority">
-                                                        <option value="">Select Priority</option>
-                                                        <option value="low">Low</option>
-                                                        <option value="medium">Medium</option>
-                                                        <option value="high">High</option>
-                                                    </select>
+                                                    <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                                                        href="javascript:;" @click="toggleCode('code1')">
+                                                    </a>
+                                                    <div class="mb-5">
+                                                        <flat-pickr v-model="date2" class="form-input"
+                                                            :config="basic"></flat-pickr>
+                                                    </div>
                                                 </div>
-                                                <template v-if="codeArr.includes('code1')">
-                                                    <highlight>
-                                                        <pre>
-&lt;!-- basic --&gt;
-&lt;flat-pickr v-model=&quot;date1&quot; class=&quot;form-input&quot; :config=&quot;basic&quot;&gt;&lt;/flat-pickr&gt;
-
-&lt;!-- script --&gt;
-&lt;script lang=&quot;ts&quot; setup&gt;
-  import { ref, onMounted } from 'vue';
-  import { useAppStore } from '@/stores/index';
-
-  //flatpickr
-  import flatPickr from 'vue-flatpickr-component';
-  import 'flatpickr/dist/flatpickr.css';
-
-  const store = useAppStore();
-
-  const date1 = ref('2022-07-05');
-  const basic: any = ref({
-    dateFormat: 'Y-m-d',
-    position: store.rtlClass === 'rtl' ? 'auto right' : 'auto left',
-  });
-&lt;/script&gt;
-</pre>
-                                                    </highlight>
-                                                </template>
                                             </div>
                                             <div class="mb-5">
                                                 <label>Description</label>
@@ -501,7 +481,8 @@
                                                 <button type="button" class="btn btn-outline-danger"
                                                     @click="addTaskModal = false">Cancel</button>
                                                 <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">{{
-                    params.id ? 'Update' : 'Add' }}</button>
+                                                    params.id ?
+                                                    'Update' : 'Add' }}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -511,94 +492,6 @@
                     </div>
                 </Dialog>
             </TransitionRoot>
-
-            <!-- <TransitionRoot appear :show="viewTaskModal" as="template">
-                <Dialog as="div" @close="viewTaskModal = false" class="relative z-[51]">
-                    <TransitionChild
-                        as="template"
-                        enter="duration-300 ease-out"
-                        enter-from="opacity-0"
-                        enter-to="opacity-100"
-                        leave="duration-200 ease-in"
-                        leave-from="opacity-100"
-                        leave-to="opacity-0"
-                    >
-                        <DialogOverlay class="fixed inset-0 bg-[black]/60" />
-                    </TransitionChild>
-
-                    <div class="fixed inset-0 overflow-y-auto">
-                        <div class="flex min-h-full items-center justify-center px-4 py-8">
-                            <TransitionChild
-                                as="template"
-                                enter="duration-300 ease-out"
-                                enter-from="opacity-0 scale-95"
-                                enter-to="opacity-100 scale-100"
-                                leave="duration-200 ease-in"
-                                leave-from="opacity-100 scale-100"
-                                leave-to="opacity-0 scale-95"
-                            >
-                                <DialogPanel class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg text-black dark:text-white-dark">
-                                    <button
-                                        type="button"
-                                        class="absolute top-4 ltr:right-4 rtl:left-4 text-gray-400 hover:text-gray-800 dark:hover:text-gray-600 outline-none"
-                                        @click="viewTaskModal = false"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24px"
-                                            height="24px"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="w-6 h-6"
-                                        >
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </button>
-                                    <div
-                                        class="flex items-center flex-wrap gap-2 text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]"
-                                    >
-                                        <div>{{ selectedTask.title }}</div>
-                                        <div
-                                            v-show="selectedTask.priority"
-                                            class="badge rounded-3xl capitalize"
-                                            :class="{
-                                                'badge-outline-primary': selectedTask.priority === 'medium',
-                                                'badge-outline-warning ': selectedTask.priority === 'low',
-                                                'badge-outline-danger ': selectedTask.priority === 'high',
-                                            }"
-                                        >
-                                            {{ selectedTask.priority }}
-                                        </div>
-
-                                        <div
-                                            v-show="selectedTask.tag"
-                                            class="badge rounded-3xl capitalize"
-                                            :class="{
-                                                'badge-outline-success ': selectedTask.tag === 'team',
-                                                'badge-outline-info ': selectedTask.tag === 'update',
-                                            }"
-                                        >
-                                            {{ selectedTask.tag }}
-                                        </div>
-                                    </div>
-                                    <div class="p-5">
-                                        <div class="text-base prose" v-html="selectedTask.description"></div>
-
-                                        <div class="flex justify-end items-center mt-8">
-                                            <button type="button" class="btn btn-outline-danger" @click="viewTaskModal = false">Close</button>
-                                        </div>
-                                    </div>
-                                </DialogPanel>
-                            </TransitionChild>
-                        </div>
-                    </div>
-                </Dialog>
-            </TransitionRoot> -->
         </div>
     </div>
 </template>
@@ -609,12 +502,14 @@ import { quillEditor } from 'vue3-quill';
 import 'vue3-quill/lib/vue3-quill.css';
 import Swal from 'sweetalert2';
 
-import { useAppStore } from '@/stores/index';
-import { useMeta } from '@/composables/use-meta';
-import highlight from '@/components/plugins/highlight.vue';
- //flatpickr
+import codePreview from '@/composables/codePreview';
+const { codeArr, toggleCode } = codePreview();
+//flatpickr
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+
+import { useAppStore } from '@/stores/index';
+import { useMeta } from '@/composables/use-meta';
 useMeta({ title: 'Projects' });
 const store = useAppStore();
 
@@ -622,8 +517,8 @@ const defaultParams = ref({
     id: null,
     title: '',
     description: '',
-    start_day: '',
-    end_day: '',
+    startday: '',
+    endday: '',
 });
 
 const selectedTab = ref('');
@@ -1142,43 +1037,43 @@ const deleteTask = (task: any, type: string = '') => {
     searchTasks(false);
 };
 
-const saveTask = () => {
-    if (!params.value.title) {
-        showMessage('Title is required.', 'error');
-        return false;
-    }
+// const saveTask = () => {
+//     if (!params.value.title) {
+//         showMessage('Title is required.', 'error');
+//         return false;
+//     }
 
-    if (params.value.id) {
-        //update task
-        pagedTasks.value = pagedTasks.value.map((d: any) => {
-            if (d.id === params.value.id) {
-                d = params.value;
-                d.descriptionText = quillEditorObj.value.getText();
-            }
-            return d;
-        });
-    } else {
-        //add task
-        const maxid = allTasks.value.length ? allTasks.value.reduce((max, obj) => (obj.id > max ? obj.id : max), allTasks.value[0].id) : 0;
+//     if (params.value.id) {
+//         //update task
+//         pagedTasks.value = pagedTasks.value.map((d: any) => {
+//             if (d.id === params.value.id) {
+//                 d = params.value;
+//                 d.descriptionText = quillEditorObj.value.getText();
+//             }
+//             return d;
+//         });
+//     } else {
+//         //add task
+//         const maxid = allTasks.value.length ? allTasks.value.reduce((max, obj) => (obj.id > max ? obj.id : max), allTasks.value[0].id) : 0;
 
-        const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth());
-        const yyyy = today.getFullYear();
-        const monthNames: any = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//         const today = new Date();
+//         const dd = String(today.getDate()).padStart(2, '0');
+//         const mm = String(today.getMonth());
+//         const yyyy = today.getFullYear();
+//         const monthNames: any = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-        let task = params.value;
-        task.id = maxid + 1;
-        task.descriptionText = quillEditorObj.value.getText();
-        task.date = monthNames[mm] + ', ' + dd + ' ' + yyyy;
+//         let task = params.value;
+//         task.id = maxid + 1;
+//         task.descriptionText = quillEditorObj.value.getText();
+//         task.date = monthNames[mm] + ', ' + dd + ' ' + yyyy;
 
-        allTasks.value.splice(0, 0, task);
-        searchTasks();
-    }
+//         allTasks.value.splice(0, 0, task);
+//         searchTasks();
+//     }
 
-    showMessage('Task has been saved successfully.');
-    addTaskModal.value = false;
-};
+//     showMessage('Task has been saved successfully.');
+//     addTaskModal.value = false;
+// };
 
 const showMessage = (msg = '', type = 'success') => {
     const toast: any = Swal.mixin({
@@ -1194,7 +1089,53 @@ const showMessage = (msg = '', type = 'success') => {
         padding: '10px 20px',
     });
 };
-import codePreview from '@/composables/codePreview';
 
-const { codeArr, toggleCode } = codePreview();
+import axios, { AxiosHeaders } from 'axios';
+import { ref } from 'vue';
+const basic: any = ref({
+        dateFormat: 'Y-m-d',
+        position: store.rtlClass === 'rtl' ? 'auto right' : 'auto left',
+    });
+
+const title = ref('');
+const date1 = ref('');
+const date2 = ref('');
+
+const saveTask = async () => {
+  try {
+    const formData = {
+      title: title.value,
+      startDate: date1.value,
+      endDate: date2.value,
+      description: quillEditorObj.value.getText(),
+    };
+    const userToken = store.user_token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+
+    if (params.value.id) {
+      // If there's an ID, it's an update operation
+      await axios.put(`api/project/update/${params.value.id}`, formData);
+    } else {
+      // Otherwise, it's an add operation
+      await axios.post('api/project/add', formData);
+      showMessage('Task has been saved successfully.');
+    }
+
+    // Reset form fields after successful submission
+    // resetForm();
+
+  } catch (error) {
+    console.error('Error saving task:', error);
+    // Handle error
+  }
+};
+
+// const resetForm = () => {
+//   title.value = '';
+//   date1.value = '';
+//   date2.value = '';
+//   params.value.id = null;
+//   params.value.title = '';
+//   // Reset more properties as needed
+// };
 </script>

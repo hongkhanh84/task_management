@@ -77,6 +77,7 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth && !store.user_token){
         next({name:'login'});
     } else if (store.user_token && to.name === 'login'){
+        //  store.clearToken();
         next({name:'home'})
     } else {
         next()

@@ -20,7 +20,7 @@ export const useAppStore = defineStore('app', {
         ],
         isShowMainLoader: true,
         semidark: false,
-        user_token: sessionStorage.getItem("token"),
+        user_token: localStorage.getItem("token"),
      
     }),
 
@@ -110,7 +110,7 @@ export const useAppStore = defineStore('app', {
             this.user_token = token;
             // sessionStorage.setItem('name', name); // Save token to localStorage
             // sessionStorage.setItem('email', email);
-            sessionStorage.setItem('token', token);
+            localStorage.setItem('token', token);
         },
         clearToken() {
             // this.user.name = null; // Clear user_token state
@@ -118,7 +118,7 @@ export const useAppStore = defineStore('app', {
             this.user_token = null;
             // sessionStorage.removeItem('name'); // Remove token from localStorage
             // sessionStorage.removeItem('email');
-            sessionStorage.removeItem('token');
+            localStorage.removeItem('token');
         }
     },
 

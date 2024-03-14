@@ -737,9 +737,26 @@
     const removeMessage = (value: number) => {
         messages.value = messages.value.filter((d) => d.id !== value);
     };
+import axios from 'axios';
+const logout = async () => {
 
-const logout = () => {
+
+    const userToken = store.user_token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+
+    await axios.post('api/logout');
+    // axios.post('api/logout')
+    //     .then(response => {
+
+    //        console.log(response.data)
+
+    //     })
+    //     .catch(error => {
+    //         console.error('Error logging out:', error);
+    //         // Handle logout error
+    //     });
     store.clearToken();
+    delete axios.defaults.headers.common['Authorization'];
     window.location.reload();
 };
 

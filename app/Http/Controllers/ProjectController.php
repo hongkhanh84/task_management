@@ -31,7 +31,21 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
-        //
+         // Create a new instance of your model
+         $data = new Project(); // Replace data with your actual model name
+
+         // Assign the validated data to the model properties
+         $data->name = $request['title'];
+         $data->start_date = $request['startDate'];
+         $data->end_date = $request['endDate'];
+         $data->description = $request['description'];
+         // Assign other fields as needed
+ 
+         // Save the model instance to the database
+         $data->save();
+ 
+         // Optionally, you can return a response indicating success
+         return response()->json(['message' => 'Data stored successfully'], 201);
     }
 
     /**
