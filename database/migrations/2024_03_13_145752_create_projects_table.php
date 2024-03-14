@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('start_day');
             $table->date('end_day');
             $table->string('description');
+            $table->enum('status', ['new', 'running', 'done', 'trash'])->default('new');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

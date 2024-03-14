@@ -1,7 +1,12 @@
 {
     "dashboard": "Dashboard",
     "workspace": "Workspace",
-    "roject":"Project",
+    "project":"Project",
     "task":"Task",
-    "user":"User"
+    "user":"User",
+    "Dashboard": "Dashboard",
+    "Workspace": "Workspace",
+    "Project":"Project",
+    "Task":"Task",
+    "User":"User"
 }

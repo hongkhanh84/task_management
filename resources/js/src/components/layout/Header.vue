@@ -476,7 +476,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <router-link to="/user/profile" class="dark:hover:text-white" @click="close()">
                                             <svg
                                                 class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0"
@@ -497,9 +497,9 @@
 
                                             Profile
                                         </router-link>
-                                    </li>
+                                    </li> -->
                                     <li class="border-t border-white-light dark:border-white-light/10">
-                                        <router-link to="/login" class="text-danger !py-3" @click="close()">
+                                        <button @click="logout" class="text-danger !py-3">
                                             <svg
                                                 class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 rotate-90 shrink-0"
                                                 width="18"
@@ -525,7 +525,7 @@
                                             </svg>
 
                                             Sign Out
-                                        </router-link>
+                                        </button>
                                     </li>
                                 </ul>
                             </template>
@@ -737,4 +737,10 @@
     const removeMessage = (value: number) => {
         messages.value = messages.value.filter((d) => d.id !== value);
     };
+
+const logout = () => {
+    store.clearToken();
+    window.location.reload();
+};
+
 </script>
