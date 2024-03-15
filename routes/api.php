@@ -26,17 +26,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::get('/user/infor',[UserController::class, 'infor']);
 
-Route::post('/project/add',[ProjectController::class, 'store']);
-
-Route::get('/test', function () {
-    if (auth()->check()) {
-        // User is authenticated
-        $tokens = auth()->user()->tokens;
-        // Proceed with token-related operations
-        dd(1);
-    } else {
-        dd(2);
-        // User is not authenticated
-        // Handle the case where authentication is required
-    }
-});
+Route::post('/project/add',[ProjectController::class, 'store'])->middleware('auth:sanctum');

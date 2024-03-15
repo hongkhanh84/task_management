@@ -11,11 +11,15 @@ class AuthController extends Controller
     {
         $credentials = $request->all();
 
-        if (!Auth::attempt($credentials)) {
+        $remember = $credentials['remember'] ?? false;
+        unset($credentials['remember']);
+        
+        if (!Auth::attempt($credentials,$remember)) {
             return response([
                 'msg' => 'Do not match'
             ], 422);
         }
+        
 
         $user = Auth::user();
         $token = $user->createToken('Tokenn')->plainTextToken;
@@ -28,7 +32,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        //$request->user()->tokens()->delete();
+        $user = Auth::user();
+        // Revoke the token that was used to authenticate the current request...
+        $user->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out']);
     }
