@@ -140,7 +140,6 @@ const currentFlag = computed(() => {
 
 <script lang="ts">
 import axios from 'axios';
-let store = useAppStore();
 export default {
     data() {
         return {
