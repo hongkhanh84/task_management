@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -29,9 +30,24 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectRequest $request): RedirectResponse
+    public function store(StoreProjectRequest $request)
     {
-        //
+         // Create a new instance of your model
+         $data = new Project(); // Replace data with your actual model name
+
+         // Assign the validated data to the model properties
+         $data->name = $request['title'];
+         $data->start_day = Carbon::createFromFormat('Y-m-d', $request['startDate']);
+
+         $data->end_day = Carbon::createFromFormat('Y-m-d', $request['endDate']);
+         $data->description = $request['description'];
+         // Assign other fields as needed
+ 
+         // Save the model instance to the database
+         $data->save();
+ 
+         // Optionally, you can return a response indicating success
+         return response()->json(['message' => 'Data stored successfully'], 201);
     }
 
     /**

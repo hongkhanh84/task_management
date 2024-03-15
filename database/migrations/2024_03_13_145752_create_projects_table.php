@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('start_day');
-            $table->date('end_day');
+            $table->dateTime('start_day');
+            $table->dateTime('end_day');
             $table->string('description');
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->enum('status', ['new', 'running', 'done', 'trash'])->default('new');
+            //$table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade')->default(null);
+
             $table->timestamps();
         });
     }

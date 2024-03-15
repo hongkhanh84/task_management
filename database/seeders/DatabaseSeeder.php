@@ -27,14 +27,14 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Manager 1',
             'email' => 'manager1@gmail.com',
-            'password' => self::DEFAULT_PASSWORD,
+            'password' => bcrypt(self::DEFAULT_PASSWORD),
             'remember_token' => Str::random(60),
             'role' => 'manager', 
         ]);
         User::create([
             'name' => 'Staff 1',
             'email' => 'staff1@gmail.com',
-            'password' => self::DEFAULT_PASSWORD,
+            'password' => bcrypt(self::DEFAULT_PASSWORD),
             'remember_token' => Str::random(60),
             'role' => 'staff', 
         ]);
