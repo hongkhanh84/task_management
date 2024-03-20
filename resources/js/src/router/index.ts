@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/project',
         name: 'project',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project.vue'),
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/index.vue'),
         meta: {requireAuth: true},
     },
     {
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/project/:id',
         name: 'tree_project',
-        component: () => import(/* webpackChunkName: "tree_project" */ '../views/tree_project.vue'),
+        component: () => import(/* webpackChunkName: "tree_project" */ '../views/project/detail.vue'),
         meta: {requireAuth: true},
     },
     {
@@ -40,14 +40,14 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/user/profile',
         name: 'profile',
-        component: () => import(/* webpackChunkName: "profile" */ '../views/profile.vue'),
+        component: () => import(/* webpackChunkName: "profile" */ '../views/auth/profile.vue'),
         meta: {requireAuth: true},
     },
 
     {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "login" */ '../views/login.vue'),
+        component: () => import(/* webpackChunkName: "login" */ '../views/auth/login.vue'),
         meta: { layout: 'auth' },
     },
 ];
