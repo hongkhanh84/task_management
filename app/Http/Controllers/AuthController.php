@@ -2,41 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\Interfaces\AuthRepositoryInterface;
+use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    use ApiResponseTrait;
+
+    protected $authRepository;
+
+    public function __construct(AuthRepositoryInterface $authRepository)
+    {
+        $this->authRepository = $authRepository;
+    }
+
     public function login(Request $request)
     {
-        $credentials = $request->all();
+        $credentials = $request->only('email', 'password');
 
-        $remember = $credentials['remember'] ?? false;
-        unset($credentials['remember']);
-        
-        if (!Auth::attempt($credentials,$remember)) {
-            return response([
-                'msg' => 'Do not match'
-            ], 422);
+        $loginData = $this->authRepository->login($credentials);
+
+        if (!$loginData) {
+            return $this->errorResponse('Unauthorized', 401);
         }
-        
 
-        $user = Auth::user();
-        $token = $user->createToken('Tokenn')->plainTextToken;
-        return response([
-            'name' => $user->name,
-            'email' => $user->email,
-            'token' => $token
+        return $this->successResponse([
+            'user' => new UserResource($loginData['user']),
+            'token' => $loginData['token']
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        //$request->user()->tokens()->delete();
-        $user = Auth::user();
-        // Revoke the token that was used to authenticate the current request...
-        $user->currentAccessToken()->delete();
+        $response = $this->authRepository->logout();
 
-        return response()->json(['message' => 'Logged out']);
+        return $this->successResponse($response);
     }
 }
