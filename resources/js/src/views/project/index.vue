@@ -708,6 +708,7 @@ onMounted(async () => {
         } else {
             console.error('Unexpected API response format. Expected an array.');
         }
+        //console.log(allTasks.value)
     } catch (error) {
         console.error('Error fetching tasks from API:', error);
         // ... handle API call errors

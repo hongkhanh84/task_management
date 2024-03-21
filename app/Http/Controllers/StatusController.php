@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Status;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
+use App\Http\Resources\StatusResource;
+use App\Traits\ApiResponseTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class StatusController extends Controller
 {
+    use ApiResponseTrait;
+
+    public function all()
+    {
+        $data = Status::all();
+        return $this->successResponse(StatusResource::collection($data));
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +38,12 @@ class StatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatusRequest $request): RedirectResponse
+    public function store(StoreStatusRequest $request)
     {
-        //
+        Status::create([
+            'status_name' => $request->name,
+            'description' => $request->description,
+        ]);   
     }
 
     /**

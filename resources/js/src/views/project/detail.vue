@@ -270,14 +270,19 @@ const showMessage = (msg = '', type = 'success') => {
     });
 };
 
+import { useRoute } from 'vue-router';
+
+// Inside your Vue component setup
 
 const saveTask = async () => {
   try {
+    const route = useRoute();
     const formData = {
       title: title.value,
       assignee: assignee.value,
       deadline: date1.value,
       description: quillEditorObj.value.getText(),
+      projectId: route.params.id
     };
     const userToken = store.user_token;
     axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
@@ -291,7 +296,7 @@ const saveTask = async () => {
       await axios.post('api/task/add', formData);
       showMessage('Task has been saved successfully.');
     }
-    //resetForm();
+    resetForm();
     addTaskModal.value = false;
 
   } catch (error) {

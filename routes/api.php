@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')
         Route::post('add', 'store');
         Route::post('update', 'edit');
         Route::post('delete', 'destroy');
+        Route::post('project_id', 'belong');
     });
     //Sub_Task Routes
     Route::prefix('subtask')->controller(SubtaskController::class)
@@ -59,7 +60,7 @@ Route::middleware('auth:sanctum')
     //Status Routes
     Route::prefix('status')->controller(StatusController::class)
     ->group(function() {
-        Route::post('/', 'index');
+        Route::post('all', 'all');
         Route::post('add', 'store');
         Route::post('update', 'edit');
         Route::post('delete', 'destroy');

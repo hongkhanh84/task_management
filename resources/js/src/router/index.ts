@@ -38,6 +38,12 @@ const routes: RouteRecordRaw[] = [
         meta: {requireAuth: true},
     },
     {
+        path: '/status',
+        name: 'status',
+        component: () => import(/* webpackChunkName: "status" */ '../views/status.vue'),
+        meta: {requireAuth: true},
+    },
+    {
         path: '/user/profile',
         name: 'profile',
         component: () => import(/* webpackChunkName: "profile" */ '../views/auth/profile.vue'),

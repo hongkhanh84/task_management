@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -37,6 +38,19 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt(self::DEFAULT_PASSWORD),
             'remember_token' => Str::random(60),
             'role' => 'staff', 
+        ]);
+
+        Status::create([
+            'status_name' => 'Not Start',
+        ]);
+        Status::create([
+            'status_name' => 'In Process',
+        ]);
+        Status::create([
+            'status_name' => 'Pending',
+        ]);
+        Status::create([
+            'status_name' => 'Done',
         ]);
     }
 }
