@@ -23,4 +23,10 @@ class UserController extends Controller
 
         return $this->successResponse(['data' => UserResource::collection($users)]);
     }
+
+    public function infor(){
+        $users = $this->userRepository->infor();
+
+        return $this->successResponse(['data' => $users]);
+    }
 }

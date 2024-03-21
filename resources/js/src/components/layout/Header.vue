@@ -170,10 +170,10 @@
                                             </div>
                                             <div class="ltr:pl-4 rtl:pr-4 truncate">
                                                 <h4 class="text-base">
-                                                    {{  }}
+                                                    {{ user.name }}
                                                 </h4>
                                                 <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
-                                                    href="javascript:;">{{  }}</a>
+                                                    href="javascript:;">{{ user.email }}</a>
                                             </div>
                                         </div>
                                     </li>
@@ -309,7 +309,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, reactive, watch } from 'vue';
+import { onMounted, computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import appSetting from '@/app-setting';
@@ -371,4 +371,23 @@ const logout = async () => {
     delete axios.defaults.headers.common['Authorization'];
     window.location.reload();
 };
+const user = ref([]);
+onMounted(async () => {
+        try {
+            const response = await fetchContactsFromAPI(); 
+            user.value = response.data.data;
+        } catch (error) {
+            console.error('Error fetching contacts:', error);
+            // Handle API call errors gracefully
+        }
+    });
+    const fetchContactsFromAPI = async () => {
+        // Perform API request to fetch contacts
+        // Replace the URL with your API endpoint
+        const userToken = store.user_token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+
+        const response = await axios.post('/api/user/infor');
+        return response; // Return the JSON response
+    };
 </script>

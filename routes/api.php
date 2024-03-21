@@ -72,6 +72,7 @@ Route::middleware('auth:sanctum')
         Route::post('add', 'store');
         Route::post('update', 'edit');
         Route::post('delete', 'destroy');
+        Route::post('infor','infor');
     });
 });
 
