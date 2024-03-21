@@ -7,4 +7,6 @@ interface UserRepositoryInterface
     public function all();
 
     public function infor();
+
+    public function findByName(String $name);
 }

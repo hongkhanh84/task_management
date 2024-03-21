@@ -135,6 +135,16 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="mb-5">
+                                            <label for="statuss">Status</label>
+                                            <select id="statuss" class="form-select" v-model="statuss">
+                                                <option value="">Select Status</option>
+                                                <option v-for="statuss in statuses" :key="statuss.id"
+                                                    :value="statuss.id">
+                                                    {{ statuss.name }}
+                                                </option>
+                                            </select>
+                                        </div>
                                         <div class="mb-5 flex justify-between gap-4">
                                             <div class="flex-1">
                                                 <label for="priority">Deadline</label>
@@ -214,6 +224,7 @@ const defaultParams = ref({
     title: '',
     description: '',
     assignee: '',
+    statuss: '',
 });
 const params = ref(JSON.parse(JSON.stringify(defaultParams.value)));
 const quillEditorObj: any = ref(null);
@@ -230,13 +241,13 @@ const basic: any = ref({
 import axios from 'axios'; // Import axios
 
 const assignees = ref([]); // Array to store fetched assignee data
+const statuses = ref([]); // Array to store fetched assignee data
 const userToken = store.user_token;
     axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
 const fetchAssignees = async () => {
   try {
     const response = await axios.post('/api/user/all'); // Replace with your API endpoint
-    //assignees.value = response.data; // Assuming the response contains assignee 
     assignees.value = response.data.data; // A
   } catch (error) {
     console.error('Error fetching assignees:', error);
@@ -244,7 +255,20 @@ const fetchAssignees = async () => {
   }
 };
 
-onMounted(fetchAssignees);
+const fetchStatuses = async () => {
+  try {
+    const response1 = await axios.post('/api/status/all'); // Replace with your API endpoint
+    statuses.value = response1.data;
+  } catch (error) {
+    console.error('Error fetching assignees:', error);
+    // Handle API call errors gracefully
+  }
+};
+
+onMounted(async () => {
+        await fetchAssignees();
+        await fetchStatuses();
+    });
 
 const title = ref('');
 const date1 = ref('');
@@ -273,13 +297,13 @@ const showMessage = (msg = '', type = 'success') => {
 import { useRoute } from 'vue-router';
 
 // Inside your Vue component setup
-
+const route = useRoute();
 const saveTask = async () => {
   try {
-    const route = useRoute();
     const formData = {
       title: title.value,
       assignee: assignee.value,
+      statuss: statuss.value,
       deadline: date1.value,
       description: quillEditorObj.value.getText(),
       projectId: route.params.id
@@ -289,12 +313,13 @@ const saveTask = async () => {
 
     if (params.value.id) {
       // If there's an ID, it's an update operation
-      await axios.put(`api/task/update/${params.value.id}`, formData);
+      await axios.put(`/api/task/update/${params.value.id}`, formData);
       showMessage('Task has been updated successfully.');
     } else {
       // Otherwise, it's an add operation
-      await axios.post('api/task/add', formData);
+      await axios.post('/api/task/add', formData);
       showMessage('Task has been saved successfully.');
+      //console.log(formData)
     }
     resetForm();
     addTaskModal.value = false;

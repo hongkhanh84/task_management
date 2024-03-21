@@ -16,4 +16,8 @@ class UserRepository
     {
         return Auth::user();
     }
+
+    public function findByName(String $name){
+        return User::find('name','=' ,$name);
+    }
 }

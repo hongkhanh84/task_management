@@ -318,7 +318,6 @@ import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores/index';
 const store = useAppStore();
 const route = useRoute();
-const search = ref(false);
 
 // multi language
 const i18n = reactive(useI18n());
@@ -365,7 +364,7 @@ const logout = async () => {
     const userToken = store.user_token;
     axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
-    await axios.post('api/logout');
+    await axios.post('/api/logout');
     
     store.clearToken();
     delete axios.defaults.headers.common['Authorization'];
@@ -390,4 +389,5 @@ onMounted(async () => {
         const response = await axios.post('/api/user/infor');
         return response; // Return the JSON response
     };
+    setActiveDropdown();
 </script>

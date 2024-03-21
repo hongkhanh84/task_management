@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')
     //Task Routes
     Route::prefix('task')->controller(TaskController::class)
     ->group(function() {
-        Route::post('/', 'index');
+        Route::post('all', 'index');
         Route::post('add', 'store');
         Route::post('update', 'edit');
         Route::post('delete', 'destroy');
