@@ -126,14 +126,15 @@
                                                 class="form-input" v-model="title" />
                                         </div>
                                         <div class="mb-5">
-    <label for="assignee">Assignee</label>
-    <select id="assignee" class="form-select" v-model="params.assignee">
-        <option value="">Select Assignee</option>
-        <option v-for="assignee in assignees" :key="assignee.id" :value="assignee.id">
-            {{ assignee.name }}
-        </option>
-    </select>
-</div>
+                                            <label for="assignee">Assignee</label>
+                                            <select id="assignee" class="form-select" v-model="assignee">
+                                                <option value="">Select Assignee</option>
+                                                <option v-for="assignee in assignees" :key="assignee.id"
+                                                    :value="assignee.id">
+                                                    {{ assignee.name }}
+                                                </option>
+                                            </select>
+                                        </div>
                                         <div class="mb-5 flex justify-between gap-4">
                                             <div class="flex-1">
                                                 <label for="priority">Deadline</label>
@@ -172,8 +173,7 @@
 //flatpickr
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { ref } from 'vue';
-import highlight from '@/components/plugins/highlight.vue';
+import { ref, onMounted } from 'vue';
 import codePreview from '@/composables/codePreview';
 import VueCollapsible from 'vue-height-collapsible/vue3';
 import { useMeta } from '@/composables/use-meta';
@@ -185,7 +185,7 @@ import Swal from 'sweetalert2';
 
 import { useAppStore } from '@/stores/index';
 
-const { codeArr, toggleCode } = codePreview();
+const { toggleCode } = codePreview();
 const treeview1: any = ref(['images']);
 
 const toggleTreeview1 = (name: string) => {
@@ -213,12 +213,7 @@ const defaultParams = ref({
     id: null,
     title: '',
     description: '',
-    descriptionText: '',
     assignee: '',
-    path: '',
-    tag: '',
-    priority: 'low',
-    assignee: ''
 });
 const params = ref(JSON.parse(JSON.stringify(defaultParams.value)));
 const quillEditorObj: any = ref(null);
@@ -227,26 +222,22 @@ const quillEditorReady = (quill: any) => {
 };
 
 
-import { useAppStore } from '@/stores/index';
-
 const store = useAppStore();
 const basic: any = ref({
         dateFormat: 'Y-m-d',
         position: store.rtlClass === 'rtl' ? 'auto right' : 'auto left',
     });
-import { ref, onMounted } from 'vue';
 import axios from 'axios'; // Import axios
 
 const assignees = ref([]); // Array to store fetched assignee data
 const userToken = store.user_token;
     axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
-
 const fetchAssignees = async () => {
   try {
     const response = await axios.post('/api/user/all'); // Replace with your API endpoint
     //assignees.value = response.data; // Assuming the response contains assignee 
-    assignees.value = response.tasks || response.data.data || []; // A
+    assignees.value = response.data.data; // A
   } catch (error) {
     console.error('Error fetching assignees:', error);
     // Handle API call errors gracefully
@@ -279,11 +270,12 @@ const showMessage = (msg = '', type = 'success') => {
     });
 };
 
+
 const saveTask = async () => {
   try {
     const formData = {
       title: title.value,
-      assignee: 'params.assignee',
+      assignee: assignee.value,
       deadline: date1.value,
       description: quillEditorObj.value.getText(),
     };
@@ -296,9 +288,8 @@ const saveTask = async () => {
       showMessage('Task has been updated successfully.');
     } else {
       // Otherwise, it's an add operation
-      console.log(formData)
-      //await axios.post('api/task/add', formData);
-      //showMessage('Task has been saved successfully.');
+      await axios.post('api/task/add', formData);
+      showMessage('Task has been saved successfully.');
     }
     //resetForm();
     addTaskModal.value = false;

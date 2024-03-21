@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')
     //User Routes
     Route::prefix('user')->controller(UserController::class)
     ->group(function() {
-        Route::post('/', 'index');
+        Route::post('all', 'all');
         Route::post('add', 'store');
         Route::post('update', 'edit');
         Route::post('delete', 'destroy');

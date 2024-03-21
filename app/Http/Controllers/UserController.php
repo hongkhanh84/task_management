@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
+use App\Repositories\UserRepository;
+use App\Traits\ApiResponseTrait;
 
 class UserController extends Controller
 {
+    use ApiResponseTrait;
+
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function all()
     {
-        $data = User::all();
+        $users = $this->userRepository->all();
 
-    return response()->json([
-        'data' => $data,
-    ]);
+        return $this->successResponse(['data' => UserResource::collection($users)]);
     }
 }
