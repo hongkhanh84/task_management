@@ -12,6 +12,7 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'project_id',
         'status_id',
         'created_by',
@@ -33,5 +34,10 @@ class Task extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

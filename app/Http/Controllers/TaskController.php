@@ -18,7 +18,7 @@ class TaskController extends Controller
 
     public function index()
     {
-        return Task::all();
+        return Task::with('status')->get();
     }
     public function store(StoreTaskRequest $request)
     {
