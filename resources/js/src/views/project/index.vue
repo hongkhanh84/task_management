@@ -501,15 +501,15 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
 import { quillEditor } from 'vue3-quill';
 import 'vue3-quill/lib/vue3-quill.css';
 import Swal from 'sweetalert2';
 
 import codePreview from '@/composables/codePreview';
-const { codeArr, toggleCode } = codePreview();
-//flatpickr
+const { toggleCode } = codePreview();
+// flatpickr
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -530,17 +530,12 @@ const defaultParams = ref({
 const selectedTab = ref('');
 const isShowTaskMenu = ref(false);
 const addTaskModal = ref(false);
-const viewTaskModal = ref(false);
 
 const params = ref(JSON.parse(JSON.stringify(defaultParams.value)));
-const allTasks = ref([
-]);
-const filteredTasks: any = ref([]);
-const pagedTasks: any = ref([]);
+const allTasks = ref([]);
+const filteredTasks = ref([]);
+const pagedTasks = ref([]);
 const searchTask = ref('');
-const selectedTask: any = ref(defaultParams.value);
-const isPriorityMenu: any = ref(null);
-const isTagMenu: any = ref(null);
 
 const pager = ref({
     currentPage: 1,
@@ -556,13 +551,13 @@ const editorOptions = ref({
     },
     placeholder: '',
 });
-const quillEditorObj: any = ref(null);
+const quillEditorObj = ref(null);
 
 onMounted(() => {
     searchTasks();
 });
 
-const quillEditorReady = (quill: any) => {
+const quillEditorReady = (quill) => {
     quillEditorObj.value = quill;
 };
 
@@ -598,44 +593,13 @@ const getPager = () => {
     });
 };
 
-const setPriority = (task: any, name: string = '') => {
-    let item = filteredTasks.value.find((d) => d.id === task.id);
-    item.priority = name;
-    searchTasks(false);
-};
-
-const setTag = (task: any, name: string = '') => {
-    let item = filteredTasks.value.find((d) => d.id === task.id);
-    item.tag = name;
-    searchTasks(false);
-};
-
-const tabChanged = (type: any = null) => {
+const tabChanged = (type = null) => {
     selectedTab.value = type;
     searchTasks();
     isShowTaskMenu.value = false;
 };
 
-const taskComplete = (task: any = null) => {
-    let item = filteredTasks.value.find((d) => d.id === task.id);
-    item.status = item.status === 'complete' ? '' : 'complete';
-    searchTasks(false);
-};
-
-const setImportant = (task: any = null) => {
-    let item = filteredTasks.value.find((d) => d.id === task.id);
-    item.status = item.status === 'important' ? '' : 'important';
-    searchTasks(false);
-};
-
-const viewTask = (item: any = null) => {
-    selectedTask.value = item;
-    setTimeout(() => {
-        viewTaskModal.value = true;
-    });
-};
-
-const addEditTask = (task: any = null) => {
+const addEditTask = (task = null) => {
     isShowTaskMenu.value = false;
 
     params.value = JSON.parse(JSON.stringify(defaultParams.value));
@@ -647,20 +611,20 @@ const addEditTask = (task: any = null) => {
     addTaskModal.value = true;
 };
 
-const deleteTask = (task: any, type: string = '') => {
+const deleteTask = (task, type = '') => {
     if (type === 'delete') {
         task.status = 'trash';
     }
     if (type === 'deletePermanent') {
-        allTasks.value = allTasks.value.filter((d: any) => d.id != task.id);
+        allTasks.value = allTasks.value.filter((d) => d.id != task.id);
     } else if (type === 'restore') {
-        task.status = '';
+        task.status = 'new';
     }
     searchTasks(false);
 };
 
 const showMessage = (msg = '', type = 'success') => {
-    const toast: any = Swal.mixin({
+    const toast = Swal.mixin({
         toast: true,
         position: 'top',
         showConfirmButton: false,
@@ -674,74 +638,81 @@ const showMessage = (msg = '', type = 'success') => {
     });
 };
 
-import axios, { AxiosHeaders } from 'axios';
+import axios from 'axios';
 import { ref } from 'vue';
-const basic: any = ref({
-        dateFormat: 'Y-m-d',
-        position: store.rtlClass === 'rtl' ? 'auto right' : 'auto left',
-    });
 
 const title = ref('');
 const date1 = ref('');
 const date2 = ref('');
 
 const saveTask = async () => {
-  try {
-    const formData = {
-      title: title.value,
-      startDate: date1.value,
-      endDate: date2.value,
-      description: quillEditorObj.value.getText(),
-    };
-    const userToken = store.user_token;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+    try {
+        const formData = {
+            title: title.value,
+            startDate: date1.value,
+            endDate: date2.value,
+            description: quillEditorObj.value.getText(),
+        };
+        const userToken = store.user_token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
-    if (params.value.id) {
-      // If there's an ID, it's an update operation
-      await axios.put(`api/project/update/${params.value.id}`, formData);
-      showMessage('Task has been updated successfully.');
-    } else {
-      // Otherwise, it's an add operation
-      await axios.post('api/project/add', formData);
-      showMessage('Task has been saved successfully.');
+        let response;
+        if (params.value.id) {
+            // If there's an ID, it's an update operation
+            response = await axios.put(`api/project/update/${params.value.id}`, formData);
+            showMessage('Task has been updated successfully.');
+        } else {
+            // Otherwise, it's an add operation
+            response = await axios.post('api/project/add', formData);
+            showMessage('Task has been saved successfully.');
+        }
+
+        // Fetch the updated project list
+        const updatedResponse = await axios.post('/api/project/index');
+        const updatedApiData = updatedResponse.data;
+
+        if (typeof updatedApiData === 'object') {
+            allTasks.value = updatedApiData.tasks || updatedApiData.data || [];
+        } else {
+            console.error('Unexpected API response format. Expected an array.');
+        }
+
+        resetForm();
+        addTaskModal.value = false;
+
+    } catch (error) {
+        console.error('Error saving task:', error);
+        // Handle error
     }
-    resetForm();
-    addTaskModal.value = false;
-
-  } catch (error) {
-    console.error('Error saving task:', error);
-    // Handle error
-  }
 };
 
 const resetForm = () => {
-  title.value = '';
-  date1.value = '';
-  date2.value = '';
-  params.value.id = null;
-  params.value.title = '';
-  // Reset more properties as needed
+    title.value = '';
+    date1.value = '';
+    date2.value = '';
+    params.value.id = null;
+    params.value.title = '';
+    // Reset more properties as needed
 };
 
 onMounted(async () => {
-  try {
-    const userToken = store.user_token;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
-    const response = await axios.post('/api/project/index');
-    const apiData = response.data;
+    try {
+        const userToken = store.user_token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+        const response = await axios.post('/api/project/index');
+        const apiData = response.data;
 
-    if (typeof apiData === 'object') {
-      // Access properties within the object
-      allTasks.value = apiData.tasks || apiData.data || []; // Assuming tasks or data is the property containing your task data
-    } else {
-      console.error('Unexpected API response format. Expected an array.');
+        if (typeof apiData === 'object') {
+            // Access properties within the object
+            allTasks.value = apiData.tasks || apiData.data || []; // Assuming tasks or data is the property containing your task data
+        } else {
+            console.error('Unexpected API response format. Expected an array.');
+        }
+    } catch (error) {
+        console.error('Error fetching tasks from API:', error);
+        // ... handle API call errors
+    } finally {
+        searchTasks(); // Call searchTasks to update filtered and paged tasks
     }
-  } catch (error) {
-    console.error('Error fetching tasks from API:', error);
-    // ... handle API call errors
-  } finally {
-    searchTasks(); // Call searchTasks to update filtered and paged tasks
-  }
 });
-
 </script>

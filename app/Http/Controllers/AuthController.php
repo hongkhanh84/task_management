@@ -6,7 +6,6 @@ use App\Http\Resources\UserResource;
 use App\Interfaces\AuthRepositoryInterface;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {

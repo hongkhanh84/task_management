@@ -27,44 +27,50 @@ use Laravel\Sanctum\Sanctum;
 
 //Auth Routes
 Route::post('/login',[AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-//Project Routes
-Route::prefix('project')->controller(ProjectController::class)->middleware('auth:sanctum')
-->group(function() {
-    Route::post('/', 'index');
-    Route::post('add', 'store');
-    Route::post('update', 'edit');
-    Route::post('delete', 'destroy');
+
+Route::middleware('auth:sanctum')
+->group(function () {
+    //Auth Routes
+    Route::post('/logout', [AuthController::class, 'logout']);
+    //Project Routes
+    Route::prefix('project')->controller(ProjectController::class)
+    ->group(function() {
+        Route::post('/index', 'index');
+        Route::post('add', 'store');
+        Route::post('update', 'edit');
+        Route::post('delete', 'destroy');
+    });
+    //Task Routes
+    Route::prefix('task')->controller(TaskController::class)
+    ->group(function() {
+        Route::post('/', 'index');
+        Route::post('add', 'store');
+        Route::post('update', 'edit');
+        Route::post('delete', 'destroy');
+    });
+    //Sub_Task Routes
+    Route::prefix('subtask')->controller(SubtaskController::class)
+    ->group(function() {
+        Route::post('/', 'index');
+        Route::post('add', 'store');
+        Route::post('update', 'edit');
+        Route::post('delete', 'destroy');
+    });
+    //Status Routes
+    Route::prefix('status')->controller(StatusController::class)
+    ->group(function() {
+        Route::post('/', 'index');
+        Route::post('add', 'store');
+        Route::post('update', 'edit');
+        Route::post('delete', 'destroy');
+    });
+    //User Routes
+    Route::prefix('user')->controller(UserController::class)
+    ->group(function() {
+        Route::post('/', 'index');
+        Route::post('add', 'store');
+        Route::post('update', 'edit');
+        Route::post('delete', 'destroy');
+    });
 });
-//Task Routes
-Route::prefix('task')->controller(TaskController::class)->middleware('auth:sanctum')
-->group(function() {
-    Route::post('/', 'index');
-    Route::post('add', 'store');
-    Route::post('update', 'edit');
-    Route::post('delete', 'destroy');
-});
-//Sub_Task Routes
-Route::prefix('subtask')->controller(SubtaskController::class)->middleware('auth:sanctum')
-->group(function() {
-    Route::post('/', 'index');
-    Route::post('add', 'store');
-    Route::post('update', 'edit');
-    Route::post('delete', 'destroy');
-});
-//Status Routes
-Route::prefix('status')->controller(StatusController::class)->middleware('auth:sanctum')
-->group(function() {
-    Route::post('/', 'index');
-    Route::post('add', 'store');
-    Route::post('update', 'edit');
-    Route::post('delete', 'destroy');
-});
-//User Routes
-Route::prefix('user')->controller(UserController::class)->middleware('auth:sanctum')
-->group(function() {
-    Route::post('/', 'index');
-    Route::post('add', 'store');
-    Route::post('update', 'edit');
-    Route::post('delete', 'destroy');
-});
+

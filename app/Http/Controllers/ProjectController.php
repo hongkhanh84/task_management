@@ -5,49 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Resources\ProjectResource;
+use App\Interfaces\ProjectRepositoryInterface;
+use App\Traits\ApiResponseTrait;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
+    use ApiResponseTrait;
+
+    protected $projectRepository;
+
+    public function __construct(ProjectRepositoryInterface $projectRepository)
+    {
+        $this->projectRepository = $projectRepository;
+    }
+
     public function index()
     {
-        $data = Project::all();
-
-        // Extracting required fields from each project
-        $formattedData = $data->map(function ($project) {
-            return [
-                'id' => $project->id,
-                'title' => $project->name,
-                'description' => $project->description,
-                'startday' => $project->start_day,
-                'endday' => $project->end_day,
-                'status' => $project->status,
-            ];
-        });
-
-    return response()->json([
-        'data' => $formattedData,
-    ]);
+        $projects = $this->projectRepository->all();
+        
+        $formattedProjects = ProjectResource::collection($projects);
+        return $this->successResponse(['data' => $formattedProjects]);
     }
 
     public function store(StoreProjectRequest $request)
     {
-         $data = new Project();
-         $data->name = $request['title'];
-         $data->start_day = Carbon::createFromFormat('Y-m-d', $request['startDate']);
-         $data->end_day = Carbon::createFromFormat('Y-m-d', $request['endDate']);
-         $data->description = $request['description'];
-         $data->save();
- 
-         return response()->json(['message' => 'Data stored successfully'], 201);
+        $data = $this->projectRepository->create([
+            'name' => $request->title,
+            'start_day' => Carbon::createFromFormat('Y-m-d', $request->startDate),
+            'end_day' => Carbon::createFromFormat('Y-m-d', $request->endDate),
+            'description' => $request->description,
+        ]);
+
+        return $this->successResponse(['message' => 'Data stored successfully'], 201);
     }
-    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
+    public function update(UpdateProjectRequest $request, Project $project)
     {
         //
     }
-    public function destroy(Project $project): RedirectResponse
+    public function destroy(Project $project)
     {
         //
     }
